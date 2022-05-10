@@ -42,8 +42,10 @@ The swap in step 2 significantly impacts the ratio between the tokens in the poo
 
 When borrowing ETH against USDC as collateral, at $3000 per ETH you should only be able to borrow 0.8 _ $2000 worth of ETH = 0.8 _ ($2000 / $3000) = 0.528 ETH. However, since the lending protocol's price oracle returns ~$333 per ETH as per the manipulated AMM pool reserves, it lets you borrow up to 0.8 \* ($2000 / $333) = 4.8 ETH.
 
+The attack pattern is illustrated in `test/OracleAttack.test.js`, which runs through the steps to execute the attack in mulitple separate transactions for step-by-step explanations, as well as all in one transaction through `Attacker.sol`. 
+
 ## Mitigation
 
-A common approach to avoid these kinds of centralized points of vulnerability is to use a decentralized price oracle that employs some kind of averaging across several (deep liquidity) pools to determine the true price. This is much harder to manipulate as it is financially practically impossible to source enough funds to be able to significantly change the price of multiple pools, especially those which have
+A common approach to avoid these kinds of centralized points of vulnerability is to use a decentralized price oracle that employs some kind of averaging across several (deep liquidity) pools to determine the true price. This is much harder to manipulate as it is financially practically impossible to source enough funds to be able to significantly change the price of multiple pools, especially those which have deeper liquidity.
 
 Another approach is to use time-weighted average price (TWAP) oracles which take the average price of the asset over a specified period of time, reducing the risk of single-transaction flash loan attacks but sacrifices some degree of accuracy during periods of high volatility. It is harder, though still possible, to manipulate these mechanisms across multiple blocks.
